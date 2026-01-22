@@ -1,0 +1,34 @@
+# разрешаем выход к базе данных
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: mysql-external
+spec:
+  hosts:
+    - mysql-service
+  addresses:
+    - 192.168.49.1
+  ports:
+    - number: 3306
+      name: mysql
+      protocol: TCP
+  location: MESH_EXTERNAL
+  resolution: STATIC
+  endpoints:
+    - address: 192.168.49.1
+---
+# правила маршрутизации
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: ums-virtual-service
+spec:
+  hosts:
+    - ums-service
+  http:
+    - route:
+        - destination:
+            host: ums-service
+      retries:
+        attempts: 3
+        perTryTimeout: 2s

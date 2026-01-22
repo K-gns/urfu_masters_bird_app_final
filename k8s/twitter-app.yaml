@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: twitter-dep
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: twitter
+  template:
+    metadata:
+      labels:
+        app: twitter
+    spec:
+      containers:
+        - name: twitter
+          image: bird-twitter:1.3
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 9001
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:mysql://mysql-service:3306/twitter?allowPublicKeyRetrieval=true&useSSL=false"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "root"
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: "passw"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: twitter-service
+spec:
+  selector:
+    app: twitter
+  ports:
+    - port: 9001

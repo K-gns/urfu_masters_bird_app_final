@@ -1,0 +1,25 @@
+# Node
+node_modules
+npm-debug.log
+yarn-error.log
+pnpm-lock.yaml
+
+# Note: keep package-lock.json in build context for better caching
+
+# Build output
+dist
+
+# Git
+.git
+
+# Editor stuff
+.vscode
+.idea
+
+# Env files
+.env
+.env.*
+
+# OS files
+.DS_Store
+Thumbs.db
